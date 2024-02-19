@@ -146,27 +146,25 @@ authenticate with IdentityServer using a client secret.
 Add this client definition to *Config.cs*:
 
 ```cs
-public static IEnumerable<Client> Clients =>
+public static IEnumerable<Client> Clients => 
+[
     new Client
-    
     {
-        new Client
+        ClientId = "client",
+
+        // no interactive user, use the clientid/secret for authentication
+        AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+        // secret for authentication
+        ClientSecrets =
         {
-            ClientId = "client",
+            new Secret("secret".Sha256())
+        },
 
-            // no interactive user, use the clientid/secret for authentication
-            AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-            // secret for authentication
-            ClientSecrets =
-            {
-                new Secret("secret".Sha256())
-            },
-
-            // scopes that client has access to
-            AllowedScopes = { "api1" }
-        }
-    };
+        // scopes that client has access to
+        AllowedScopes = { "api1" }
+    }
+];
 ```
 
 Again, see the full file 
